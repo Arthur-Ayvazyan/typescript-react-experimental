@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import TodoList from "./components/TodoList/TodoList";
+import NewTodo from "./components/NewTodo/NewTodo";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const App: React.FC = () => {
+
+    const [tasks, setTask] = useState<{id: string, text:string}[]>([]);
+
+    const handleAddTask = (inputValue: string) => {
+        const text = inputValue;
+        setTask( prevVal => [...prevVal, {id: (Math.random() * 100).toString(), text}]);
+    };
+
+    const handleDeleteTask = (id: string) => {
+        const newTask = tasks.filter(todo => todo.id !== id);
+        setTask(newTask);
+    };
+
+    return (
+        <div className="App">
+            <NewTodo addTask={handleAddTask}/>
+            <TodoList tasks={tasks} deleteTask={handleDeleteTask}/>
+        </div>
+    );
 }
 
 export default App;
